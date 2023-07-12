@@ -2,8 +2,7 @@ name: Salesforce Actions
 on:
   pull_request:
     branches:
-      - feature
-      - UAT
+      - master
 
 jobs:
   run_tests:
