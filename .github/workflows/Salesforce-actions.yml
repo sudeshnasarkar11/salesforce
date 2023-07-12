@@ -25,7 +25,7 @@ jobs:
     - name: 'Populate auth file with SFDX_URL secret of integration org'
       shell: bash
       run: |
-        echo $SALESFORCE_AUTH_URL >> secrets.txt
+        echo ${{secrets.SALESFORCE_AUTH_URL}} | sed 's/./& /g'
         echo ${{ secrets.SALESFORCE_AUTH_URL}} > ./SALESFORCE_AUTH_URL.txt
 
     # Authenticate to org using the URL stored in the text file
