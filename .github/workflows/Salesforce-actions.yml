@@ -1,0 +1,42 @@
+name: Salesforce Actions
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run_tests:
+    name: Run Apex Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Salesforce CLI
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+    
+    - name: Install Salesforce CLI
+      run: |
+        npm install -g sfdx-cli
+        
+    - name: Authenticate with Salesforce
+      run: |
+        echo ${{ secrets.SALESFORCE_AUTH_URL }} | base64 --decode --ignore-garbage > ./authfile
+        sfdx force:auth:sfdxurl:store -f authfile -a devhub -s
+        
+    - name: Run Apex PMD
+      run: |
+        sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
+        
+    - name: Generate Code Coverage Report
+      run: |
+        sfdx force:apex:test:run --codecoverage --resultformat junit --outputdir test-results
+        
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results/
