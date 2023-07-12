@@ -1,0 +1,4 @@
+- name: Authenticate with Salesforce
+  run: |
+    echo ${{ secrets.SALESFORCE_AUTH_URL }} | base64 --decode --ignore-garbage > ./authfile
+    sfdx force:auth:sfdxurl:store -f authfile -a devhub -s
