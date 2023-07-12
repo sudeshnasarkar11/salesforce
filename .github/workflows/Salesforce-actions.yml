@@ -25,7 +25,7 @@ jobs:
     - name: Authenticate with Salesforce
       run: |
         echo ${{ secrets.SALESFORCE_AUTH_URL }} | base64 --decode --ignore-garbage > ./authfile
-        sfdx force:auth:sfdxurl:store -f authfile -a devhub -s
+        sfdx force:auth:sfdxurl:store -f <(echo ${{ secrets.SALESFORCE_AUTH_URL }}) -a devhub -s
         
     - name: Run Apex PMD
       run: |
