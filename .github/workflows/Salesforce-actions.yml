@@ -22,10 +22,15 @@ jobs:
       run: |
         npm install -g sfdx-cli
         
-    - name: Authenticate with Salesforce
+    - name: 'Populate auth file with SFDX_URL secret of integration org'
+      shell: bash
       run: |
-        sfdx force:auth:sfdxurl:store -f <(echo -n ${{ secrets.SALESFORCE_AUTH_URL }}) -a devhub -s
-        
+          echo ${{ secrets.SALESFORCE_AUTH_URL}} > ./SALESFORCE_AUTH_URL.txt
+
+    # Authenticate to org using the URL stored in the text file
+    - name: 'Authenticate to Integration Org'
+      run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
+  
     - name: Run Apex PMD
       run: |
         sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
