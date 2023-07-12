@@ -47,4 +47,4 @@ jobs:
         path: test-results/
     - name: Deploy to Salesforce
       run: |
-        sfdx force:source:deploy -p 'force-app' -u
+        sfdx force:source:deploy -p 'force-app' -u integration
