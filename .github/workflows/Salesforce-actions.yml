@@ -40,7 +40,7 @@ jobs:
     - name: Determine Changed Apex Classes
       id: changed_classes
       run: |
-        changed_files=$(git diff --name-only HEAD..${{ github.event.pull_request.base.sha }} | grep '.cls$')
+        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..HEAD | grep '.cls$')
         echo "CHANGED_CLASSES=$changed_files" >> $GITHUB_ENV
 
     - name: Run Apex Tests for Changed Classes
