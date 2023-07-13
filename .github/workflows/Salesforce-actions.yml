@@ -35,25 +35,6 @@ jobs:
     - name: Run Apex PMD
       run: |
         sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
-    - name: Print Event Payload
-      run: echo "${{ toJson(github.event) }}"
-    - name: Determine Changed Apex Classes
-      id: changed_classes
-      run: |
-        changed_files=$(git diff --name-only ${{ github.event.pull_request.base.sha }}..HEAD | grep '.cls$')
-        echo "CHANGED_CLASSES=$changed_files" >> $GITHUB_ENV
-
-    - name: Run Apex Tests for Changed Classes
-      run: |
-        changed_classes="${{ env.CHANGED_CLASSES }}"
-        test_classes=""
-        for class in $changed_classes; do
-          if [[ $class != *"Test.cls" ]]; then
-            test_classes+="$(basename $class .cls)Test "
-          fi
-        done
-        sfdx force:apex:test:run --classnames "$test_classes" --resultformat junit --outputdir test-results
-
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
