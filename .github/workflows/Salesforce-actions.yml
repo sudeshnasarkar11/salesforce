@@ -32,15 +32,10 @@ jobs:
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
   
-    - name: Install PMD
-      run: |
-        wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.40.0/pmd-bin-6.40.0.zip
-        unzip pmd-bin-6.40.0.z      export PMD_HOME=$PWD/pmd-bin-6.40.0
-
-    - name: Run Apex PMD
-      run: |
-        java -jar pmd-bin-6.40.0/lib/pmd-cli-6.40.0.jar pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f xml -r pmd-report.xml
-
+    - name: Check APEX
+      uses: legetz/setup-pmd@v6.48
+      run: pmd -language apex --dir . --rulesets ./pmd-rules.xml -f text
+      
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
