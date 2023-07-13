@@ -36,10 +36,26 @@ jobs:
       run: |
         sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
         
-    - name: Generate Code Coverage Report
-      run: |
-        sfdx force:apex:test:run --codecoverage --resultformat junit --outputdir test-results
-        
+    - name: Determine Changed Apex Classes
+        id: changed_classes
+        run: |
+          changed_files=$(git diff --name-only HEAD..${{ github.event.pull_request.base.sha }} | grep '.cls$')
+          echo "::set-output name=classes::$changed_files"
+
+    - name: Run Apex Tests for Changed Classes
+        run: |
+          changed_classes=$(echo "${{ steps.changed_classes.outputs.classes }}")
+          test_classes=""
+          for class in $changed_classes; do
+            if [[ $class != *"Test.cls" ]]; then
+              test_classes+="$(basename $class .cls)Test "
+            fi
+            if [[ $class == *"Test.cls" ]]; then
+              test_classes+="$(basename $class .cls) "
+            fi
+          done
+          sfdx force:apex:test:run --classnames "$test_classes" --resultformat junit --outputdir test-results
+    
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
