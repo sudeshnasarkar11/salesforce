@@ -32,9 +32,16 @@ jobs:
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
   
+    - name: Install PMD
+        run: |
+          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.40.0/pmd-bin-6.40.0.zip
+          unzip pmd-bin-6.40.0.zip
+          export PMD_HOME=$PWD/pmd-bin-6.40.0
+
     - name: Run Apex PMD
       run: |
-        sfdx force:apex:pmd -p "force-app/main/default/classes" -d "pmd-ruleset.xml" -f xml -o "pmd-report.xml"
+        $PMD_HOME/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f xml -r pmd-report.xml
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
