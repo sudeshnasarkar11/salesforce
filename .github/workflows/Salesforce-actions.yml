@@ -38,7 +38,7 @@ jobs:
     - name: Run Apex PMD
       run: |
         cd force-app/main/default/classes
-        pmd -language apex --dir . --rulesets ../../../pmd-ruleset.xml -f text
+        pmd -language apex --dir . --rulesets ../pmd-ruleset.xml -f text
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
