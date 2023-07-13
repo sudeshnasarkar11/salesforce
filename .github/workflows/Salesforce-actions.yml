@@ -34,7 +34,7 @@ jobs:
   
     - name: Run Apex PMD
       run: |
-        sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
+        sfdx force:apex:pmd -p "force-app/main/default/classes" -d "pmd-ruleset.xml" -f xml -o "pmd-report.xml"
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
