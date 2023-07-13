@@ -40,7 +40,7 @@ jobs:
 
     - name: Run Apex PMD
       run: |
-        $PMD_HOME/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f xml -r pmd-report.xml
+        java -jar pmd-bin-6.40.0/lib/pmd-cli-6.40.0.jar pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f xml -r pmd-report.xml
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
