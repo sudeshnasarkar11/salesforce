@@ -36,7 +36,7 @@ jobs:
       uses: legetz/setup-pmd@v6.48
       
     - name: Run Apex PMD
-      run: pmd -language apex --dir . --rulesets ./pmd-rules.xml -f text
+      run: pmd -language apex --dir . --rulesets pmd-rules.xml -f text
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
