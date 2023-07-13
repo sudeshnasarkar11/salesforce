@@ -32,10 +32,11 @@ jobs:
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
   
-    - name: Check APEX
+    - name: Install APEX PMD
       uses: legetz/setup-pmd@v6.48
+    - name: Run Apex PMD
       run: pmd -language apex --dir . --rulesets ./pmd-rules.xml -f text
-      
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
