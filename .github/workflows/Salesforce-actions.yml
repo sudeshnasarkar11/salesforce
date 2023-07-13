@@ -32,6 +32,18 @@ jobs:
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
   
+    - name: Install APEX PMD
+      uses: legetz/setup-pmd@v6.48
+      
+    - name: Run Apex PMD
+      run: |
+        cd force-app/main/default/classes
+        pmd -language apex --dir . --rulesets ../../../../pmd-ruleset.xml -f text
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-results
+        path: test-results/
     - name: Deploy to Salesforce
       run: |
         sfdx force:source:deploy -p 'force-app' -u integration
