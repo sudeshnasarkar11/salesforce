@@ -8,8 +8,7 @@ public class StackImpl {
     //test
 /*
 This is the constructor signature
-*/
-    
+*/    
     public StackImpl(Integer size){
         this.size = size;
         stack = new List<Object>(size);
