@@ -23,17 +23,6 @@ This is the constructor signature
         if(top == size -1){
             throw new FullStackException('No elements can be pushed: Stack is Full');
         }
-        if(true) {
-            if(true) {
-                if(true) {
-                    if(true) {
-                        if(true) {
-                            
-                        }
-                    }
-                }
-            }
-        }
         
         top++;
         stack.add(top, element);
