@@ -45,10 +45,25 @@ jobs:
         cat pmd_report.txt
     
     - name: Upload PMD Report
+      if: always()
+      run: |
+        if [ -f "pmd_report.txt" ]; then
+          echo "Uploading PMD report"
+          echo "::set-output name=upload_pmd_report::true"
+          mv pmd_report.txt $GITHUB_WORKSPACE/pmd_report.txt
+        else
+          echo "No PMD report found"
+          echo "::set-output name=upload_pmd_report::false"
+        fi
+      id: upload_pmd_report
+
+    - name: Finalize Upload PMD Report
+      if: steps.upload_pmd_report.outputs.upload_pmd_report == 'true'
       uses: actions/upload-artifact@v2
       with:
         name: pmd-report
-        path: pmd_report.txt
+        path: $GITHUB_WORKSPACE/pmd_report.txt
+
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
