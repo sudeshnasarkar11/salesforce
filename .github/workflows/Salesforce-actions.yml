@@ -44,6 +44,17 @@ jobs:
         pmd-bin-6.41.0/bin/run.sh pmd -d force-app -R pmd-ruleset.xml -f text
         cat pmd_report.txt || true
 
+    - name: Get Changed Classes
+      id: changed_files
+      run: |
+        changed_files=$(git diff --name-only HEAD $(git merge-base HEAD ${{ github.base_ref }}) | grep '.cls$' || true)
+        echo "::set-output name=changed_files::$changed_files"
+
+    - name: Run Apex Tests on Changed Classes
+      if: steps.changed_files.outputs.changed_files != ''
+      run: |
+        sfdx force:source:deploy -p '${{ steps.changed_files.outputs.changed_files }}' -u integration --testlevel RunSpecifiedTests --runtests YourApexTestClassName
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
