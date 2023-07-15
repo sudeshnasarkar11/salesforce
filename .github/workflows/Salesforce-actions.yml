@@ -51,10 +51,12 @@ jobs:
         path: pmd_report.txt
     
     - name: Upload PMD Report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: pmd-report
         path: pmd_report.txt
+        fi
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
