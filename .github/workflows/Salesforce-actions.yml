@@ -22,6 +22,13 @@ jobs:
       run: |
         npm install -g sfdx-cli
 
+    - name: Install PMD
+      run: |
+        wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.41.0/pmd-bin-6.41.0.zip
+        unzip pmd-bin-6.41.0.zip
+        rm pmd-bin-6.41.0.zip
+        export PATH=$PATH:$PWD/pmd-bin-6.41.0/bin
+
     - name: 'Populate auth file with SFDX_URL secret of integration org'
       shell: bash
       run: |
@@ -31,18 +38,11 @@ jobs:
     # Authenticate to org using the URL stored in the text file
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
-
-    # Install PMD
-    - name: 'Install PMD'
+    
+    - name: Run Apex PMD
       run: |
-          PMD_VERSION=`cat pmd/pmd-version.txt`
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-bin-$PMD_VERSION.zip
-          unzip pmd-bin-$PMD_VERSION.zip -d ~
-          mv ~/pmd-bin-$PMD_VERSION ~/pmd
-          ~/pmd/bin/run.sh pmd --version
-    # Run PMD scan
-    - name: 'Run PMD scan'
-      run: ~/pmd/bin/run.sh pmd -d force-app -R pmd-ruleset.xml -f text
+        pmd-bin-6.41.0/bin/run.sh pmd -d force-app -R pmd-ruleset.xml -f text
+        cat pmd_report.txt
     
     - name: Upload PMD Report
       uses: actions/upload-artifact@v2
