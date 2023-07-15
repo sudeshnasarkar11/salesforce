@@ -241,7 +241,7 @@
         	<property name="cc_block_highlighting" value="false"/>
        	</properties>
 	</rule>
-
+<!-- 
 	<rule ref="rulesets/apex/style.xml/VariableNamingConventions" message="{0} variable {1} should begin with {2}">
 		<priority>3</priority>
 
@@ -251,6 +251,6 @@
 	       	<property name="cc_remediation_points_multiplier" value="5"/>
         	<property name="cc_block_highlighting" value="false"/>
        	</properties>
-	</rule>
+	</rule> -->
 
 </ruleset>
