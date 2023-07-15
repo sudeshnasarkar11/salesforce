@@ -1,7 +1,7 @@
 /*
 This is the class signature
 */
-public class StackImpl {
+public without sharing class StackImpl {
     List<Object> stack;
     Integer top;
     Integer size;

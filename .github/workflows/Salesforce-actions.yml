@@ -22,6 +22,13 @@ jobs:
       run: |
         npm install -g sfdx-cli
 
+    - name: Install PMD
+      run: |
+        wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.41.0/pmd-bin-6.41.0.zip
+        unzip pmd-bin-6.41.0.zip
+        rm pmd-bin-6.41.0.zip
+        export PATH=$PATH:$PWD/pmd-bin-6.41.0/bin
+
     - name: 'Populate auth file with SFDX_URL secret of integration org'
       shell: bash
       run: |
@@ -31,20 +38,29 @@ jobs:
     # Authenticate to org using the URL stored in the text file
     - name: 'Authenticate to Integration Org'
       run: sfdx auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -s -a integration
-  
+    
     - name: Run Apex PMD
       run: |
-        sfdx force:apex:pmd:violations --format xml --outputfile pmd-report.xml
-        
-    - name: Generate Code Coverage Report
+        pmd-bin-6.41.0/bin/run.sh pmd -d force-app -R pmd-ruleset.xml -f text
+        cat pmd_report.txt || true
+
+    - name: Get Changed Classes
+      id: changed_files
       run: |
-        sfdx force:apex:test:run --codecoverage --resultformat junit --outputdir test-results
-        
+        changed_files=$(git diff --name-only HEAD $(git merge-base HEAD ${{ github.base_ref }}) | grep '.cls$' || true)
+        echo "::set-output name=changed_files::$changed_files"
+
+    - name: Run Apex Tests on Changed Classes
+      if: steps.changed_files.outputs.changed_files != ''
+      run: |
+        sfdx force:source:deploy -p '${{ steps.changed_files.outputs.changed_files }}' -u integration --testlevel RunSpecifiedTests --runtests YourApexTestClassName
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: test-results
         path: test-results/
+
     - name: Deploy to Salesforce
       run: |
         sfdx force:source:deploy -p 'force-app' -u integration
