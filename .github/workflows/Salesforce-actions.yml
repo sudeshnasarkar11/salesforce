@@ -43,13 +43,19 @@ jobs:
       run: |
         pmd-bin-6.41.0/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text > pmd_report.txt
         cat pmd_report.txt
+    
+    - name: Upload PMD Report
+      uses: actions/upload-artifact@v2
+      with:
+        name: pmd-report
+        path: pmd_report.txt
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: test-results
         path: test-results/
-        
+
     - name: Deploy to Salesforce
       run: |
         sfdx force:source:deploy -p 'force-app' -u integration
