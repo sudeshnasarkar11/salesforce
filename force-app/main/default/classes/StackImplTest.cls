@@ -11,7 +11,7 @@ public class StackImplTest {
         //
         
     }
-    
+     
     @isTest
     static void pushNegative(){
         StackImpl myStack = new StackImpl(5);
