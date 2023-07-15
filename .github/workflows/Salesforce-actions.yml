@@ -41,7 +41,7 @@ jobs:
     
     - name: Run Apex PMD
       run: |
-        sfdx force:apex:pmd:violations --format human --ruleset "pmd-ruleset.xml" --outputfile "pmd_report.txt" -u integration
+        pmd-bin-6.41.0/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text > pmd_report.txt
         cat pmd_report.txt
 
     - name: Upload Artifacts
@@ -49,6 +49,7 @@ jobs:
       with:
         name: test-results
         path: test-results/
+        
     - name: Deploy to Salesforce
       run: |
         sfdx force:source:deploy -p 'force-app' -u integration
