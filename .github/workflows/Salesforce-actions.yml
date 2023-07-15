@@ -46,4 +46,16 @@ jobs:
 
     - name: Validate to Salesforce
       run: |
-        sfdx force:source:validate -p 'force-app' -u integration
+        sfdx force:source:deploy -p 'force-app' --checkonly --testlevel RunLocalTests -u integration
+        
+        
+    #sfdx force:source:deploy -p 'force-app' --checkonly --testlevel R -u integration
+
+    
+
+    # If the env variable equals all, we run all tests
+    #- name: 'Check-only deploy delta changes - run all tests'
+    #if: ${{ env.APEX_TESTS == 'all' }}
+    #run: |
+    #sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
+
