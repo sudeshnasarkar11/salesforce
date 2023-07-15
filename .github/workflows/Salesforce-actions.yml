@@ -41,7 +41,7 @@ jobs:
     
     - name: Run Apex PMD
       run: |
-        pmd-bin-6.41.0/bin/run.sh pmd -d ./force-app/main/default/classes -R pmd-ruleset.xml -f text > pmd_report.txt
+        pmd-bin-6.41.0/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text > pmd_report.txt
         cat pmd_report.txt
     
     - name: Upload PMD Report
