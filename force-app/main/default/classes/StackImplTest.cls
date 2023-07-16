@@ -8,6 +8,7 @@ public class StackImplTest {
         myStack.push(20);
         myStack.push(30);
         System.assertEquals(30, myStack.peek());
+        // change for userstory-4
         
     }
     
