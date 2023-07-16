@@ -26,6 +26,7 @@ This is the constructor signature
         
         top++;
         stack.add(top, element);
+        //
       /*  if(true){
 
             if(true){
