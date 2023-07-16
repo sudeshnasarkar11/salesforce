@@ -46,9 +46,9 @@ jobs:
 
     - name: Validate to Salesforce
       run: |
-        sfdx force:source:deploy -p 'force-app' --checkonly --testlevel RunLocalTests -u integration
-        
-        
+        sfdx force:source:deploy -p 'force-app' --checkonly --wait 0 --testlevel RunLocalTests --manifest -u integration 
+
+    #sfdx force:source:deploy -p 'force-app' --checkonly --testlevel RunLocalTests -u integration       
     #sfdx force:source:deploy -p 'force-app' --checkonly --testlevel R -u integration
 
     
