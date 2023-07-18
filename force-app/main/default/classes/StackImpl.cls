@@ -5,7 +5,7 @@ public without sharing class StackImpl {
     List<Object> stack;
     Integer top;
     Integer size;
-    //changed in us-99
+
 
 /*
 This is the constructor signature
