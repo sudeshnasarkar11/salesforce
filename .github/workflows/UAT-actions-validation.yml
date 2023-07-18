@@ -4,6 +4,7 @@ on:
     types:
       - opened
       - synchronize
+      - reopened
     branches:
       - UAT
 
@@ -66,4 +67,4 @@ jobs:
 
     - name: Deploy to Salesforce
       run: |
-        sfdx force:source:deploy:validate -p 'force-app' -u integration
+        sfdx force:source:deploy -p 'force-app' -u integration -l RunLocalTests --checkonly
