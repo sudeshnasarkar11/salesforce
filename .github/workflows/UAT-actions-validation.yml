@@ -67,4 +67,4 @@ jobs:
 
     - name: Deploy to Salesforce
       run: |
-        sfdx force:source:deploy -p 'force-app' -u integration --checkonly
+        sfdx force:source:deploy -p 'force-app' -u integration -l RunLocalTests --checkonly
