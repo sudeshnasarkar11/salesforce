@@ -1,4 +1,4 @@
-name: Salesforce Actions
+name: UAT actions
 on:
   pull_request:
     branches:
