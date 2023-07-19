@@ -5,6 +5,7 @@ public without sharing class StackImpl {
     List<Object> stack;
     Integer top;
     Integer size;
+    //default 0
     //changed in uat
 
 /*
